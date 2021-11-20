@@ -1,5 +1,6 @@
-import logo from './logo.svg';
+import logo from './../../logo.svg';
 import styled from 'styled-components';
+import { FC } from 'react';
 
 const AppStyle = styled.div`
     text-align: center;
@@ -16,14 +17,12 @@ const AppStyle = styled.div`
     }
 
     .app-header {
-        background-color: #282c34;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         font-size: calc(10px + 2vmin);
-        color: white;
     }
 
     .app-link {
@@ -44,7 +43,7 @@ const AppStyle = styled.div`
     }
 `;
 
-const App = () => {
+const App: FC = () => {
     return (
         <AppStyle>
             <header className="app-header">
