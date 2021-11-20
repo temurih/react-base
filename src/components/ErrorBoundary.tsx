@@ -9,7 +9,7 @@ const ErrorStyles = styled.div`
     justify-content: center;
 `;
 
-const Error: FC = () => {
+export const Error: FC = () => {
     return (
         <ErrorStyles>
             Something went wrong, please check back later!
