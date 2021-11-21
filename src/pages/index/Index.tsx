@@ -91,7 +91,7 @@ const App: FC = () => {
                     <code
                         className={isLoading(requestState) ? 'code' : undefined}
                     >
-                        src/App.tsx
+                        src/pages/index/Index.tsx
                     </code>{' '}
                     and save to reload.
                 </p>
