@@ -1,24 +1,5 @@
+import { AxiosError } from 'axios';
 import { useState } from 'react';
-
-interface ErrorResponse extends Error {
-    isAxiosError: boolean;
-    response: {
-        status: number;
-        data?: {
-            message?: string;
-        };
-    };
-}
-
-export type ApiResponse<T> =
-    | {
-          success: true;
-          data?: T;
-      }
-    | {
-          success: false;
-          error?: ErrorResponse;
-      };
 
 interface RequestStateSuccess<T> {
     type: 'REQUEST_SUCCESS';
@@ -32,15 +13,13 @@ export const isLoading = <T>(state: RequestState<T>): boolean =>
 export const isFailed = <T>(state: RequestState<T>): boolean =>
     state.type === 'REQUEST_ERROR';
 
-export const requestInit = () =>
-    ({ type: 'REQUEST_INIT', data: null } as const);
-export const requestStart = () =>
-    ({ type: 'REQUEST_START', data: null } as const);
+export const requestInit = () => ({ type: 'REQUEST_INIT' } as const);
+export const requestStart = () => ({ type: 'REQUEST_START' } as const);
 export const requestSuccess = <T>(data: T): RequestStateSuccess<T> =>
     ({ type: 'REQUEST_SUCCESS', data } as const);
 
-export const requestError = (error: ErrorResponse) =>
-    ({ type: 'REQUEST_ERROR', error, data: null } as const);
+export const requestError = (error: AxiosError) =>
+    ({ type: 'REQUEST_ERROR', error } as const);
 
 export const dataOrUndefined = <T>(request: RequestState<T>): T | undefined =>
     request.type === 'REQUEST_SUCCESS' ? request.data : undefined;

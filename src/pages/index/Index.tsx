@@ -1,19 +1,27 @@
 import logo from './../../logo.svg';
 import styled from 'styled-components';
-import { FC } from 'react';
+import { FC, useCallback, useEffect } from 'react';
+import { useApiRequest } from '../../utils/hooks/useApiRequest';
+import { testApi, TestApiResponse } from './testApi';
+import { isLoading } from '../../utils/hooks/useRequestState';
 
 const AppStyle = styled.div`
     text-align: center;
 
     .app-logo {
         height: 40vmin;
-        pointer-events: none;
+        cursor: pointer;
     }
 
     @media (prefers-reduced-motion: no-preference) {
         .app-logo {
             animation: app-logo-spin infinite 20s linear;
         }
+    }
+
+    .code {
+        color: #000;
+        background-color: #61dafb;
     }
 
     .app-header {
@@ -44,12 +52,48 @@ const AppStyle = styled.div`
 `;
 
 const App: FC = () => {
+    const [requestState, makeRequest] = useApiRequest<TestApiResponse>();
+
+    useEffect(() => {
+        switch (requestState.type) {
+            case 'REQUEST_INIT':
+                console.log(requestState.type);
+                break;
+            case 'REQUEST_START':
+                console.log(requestState.type);
+                break;
+            case 'REQUEST_SUCCESS':
+                console.log(requestState.type, requestState.data);
+                break;
+            case 'REQUEST_ERROR':
+                console.log('Error message ->', requestState.error.message);
+                break;
+            default:
+                break;
+        }
+    }, [requestState]);
+
+    const handleClick = useCallback(() => {
+        makeRequest(testApi(['something', 'something-else']));
+    }, [makeRequest]);
     return (
         <AppStyle>
             <header className="app-header">
-                <img src={logo} className="app-logo" alt="logo" />
+                <img
+                    src={logo}
+                    className="app-logo"
+                    alt="logo"
+                    title="logo"
+                    onClick={handleClick}
+                />
                 <p>
-                    Edit <code>src/App.tsx</code> and save to reload.
+                    Edit{' '}
+                    <code
+                        className={isLoading(requestState) ? 'code' : undefined}
+                    >
+                        src/App.tsx
+                    </code>{' '}
+                    and save to reload.
                 </p>
                 <a
                     className="app-link"
